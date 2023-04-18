@@ -61,6 +61,13 @@ func getData(db *gorm.DB, postID uuid.UUID) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// We could also run the query raw
+	// p = post.Post{}
+	// err = db.Debug().Raw("SELECT * from go_orm.post p LEFT JOIN go_orm.comment c ON c.post_id=p.id where p.id = ?", postID).Scan(&p).Error
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 }
 
 func setupConnection() *gorm.DB {
