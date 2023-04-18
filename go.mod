@@ -4,6 +4,8 @@ go 1.20
 
 require (
 	github.com/gofrs/uuid v4.4.0+incompatible
+	github.com/jmoiron/sqlx v1.3.5
+	github.com/lib/pq v1.2.0
 	gorm.io/driver/postgres v1.5.0
 	gorm.io/gorm v1.25.0
 )

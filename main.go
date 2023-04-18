@@ -7,6 +7,7 @@ import (
 
 	"github.com/emiliomarin/go-orm/gorm"
 	"github.com/emiliomarin/go-orm/post"
+	"github.com/emiliomarin/go-orm/sqlx"
 
 	"github.com/gofrs/uuid"
 	"gorm.io/driver/postgres"
@@ -23,6 +24,8 @@ func main() {
 	}()
 
 	getAvgDuration(gorm.Run, "gorm")
+	getAvgDuration(sqlx.Run, "sqlx")
+
 }
 
 func getAvgDuration(f func(), name string) {
@@ -33,9 +36,7 @@ func getAvgDuration(f func(), name string) {
 		f()
 		gormTime += time.Since(startGorm)
 	}
-
 	log.Println("Avg Time to run", name, gormTime/time.Duration(N))
-
 }
 
 // Setup the DB with some intiial data so it's not fully empty

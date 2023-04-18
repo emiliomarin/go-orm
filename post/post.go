@@ -13,7 +13,7 @@ const (
 
 type Post struct {
 	ID        uuid.UUID
-	CreatedAt time.Time
+	CreatedAt time.Time `db:"created_at"`
 	Author    string
 	Content   string
 	Comments  []Comment `gorm:"->;foreignKey:PostID;references:ID"`
@@ -21,8 +21,15 @@ type Post struct {
 
 type Comment struct {
 	ID        uuid.UUID
-	CreatedAt time.Time
+	CreatedAt time.Time `db:"created_at"`
 	Author    string
 	Content   string
-	PostID    uuid.UUID
+	PostID    uuid.UUID `db:"post_id"`
+}
+
+// This is a ad-hoc table for joins needed for
+// sqlx to populate the comment data
+type PostComment struct {
+	Post
+	Comment
 }
