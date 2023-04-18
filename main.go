@@ -22,7 +22,20 @@ func main() {
 		_ = sqlDB.Close()
 	}()
 
-	gorm.Run()
+	getAvgDuration(gorm.Run, "gorm")
+}
+
+func getAvgDuration(f func(), name string) {
+	N := int64(50)
+	gormTime := time.Duration(0)
+	for i := 0; i < int(N); i++ {
+		startGorm := time.Now()
+		f()
+		gormTime += time.Since(startGorm)
+	}
+
+	log.Println("Avg Time to run", name, gormTime/time.Duration(N))
+
 }
 
 // Setup the DB with some intiial data so it's not fully empty
@@ -50,7 +63,7 @@ func setupDB() *gormio.DB {
 			Content:   "some content",
 		}
 
-		if err := db.Table("go_orm.post").Create(&p).Error; err != nil {
+		if err := db.Table(post.PostTable).Create(&p).Error; err != nil {
 			log.Fatal(err)
 		}
 
@@ -69,10 +82,10 @@ func setupDB() *gormio.DB {
 			PostID:    p.ID,
 		}
 
-		if err := db.Table("go_orm.comment").Create(&comment).Error; err != nil {
+		if err := db.Table(post.CommentTable).Create(&comment).Error; err != nil {
 			log.Fatal(err)
 		}
-		if err := db.Table("go_orm.comment").Create(&comment2).Error; err != nil {
+		if err := db.Table(post.CommentTable).Create(&comment2).Error; err != nil {
 			log.Fatal(err)
 		}
 	}
