@@ -6,7 +6,9 @@ import (
 	"time"
 
 	"github.com/emiliomarin/go-orm/gorm"
+	"github.com/emiliomarin/go-orm/pgx"
 	"github.com/emiliomarin/go-orm/post"
+	"github.com/emiliomarin/go-orm/sql"
 	"github.com/emiliomarin/go-orm/sqlx"
 
 	"github.com/gofrs/uuid"
@@ -25,11 +27,13 @@ func main() {
 
 	getAvgDuration(gorm.Run, "gorm")
 	getAvgDuration(sqlx.Run, "sqlx")
+	getAvgDuration(sql.Run, "sql")
+	getAvgDuration(pgx.Run, "pgx")
 
 }
 
 func getAvgDuration(f func(), name string) {
-	N := int64(50)
+	N := int64(100)
 	gormTime := time.Duration(0)
 	for i := 0; i < int(N); i++ {
 		startGorm := time.Now()
